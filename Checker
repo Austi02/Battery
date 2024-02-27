@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPS File Analysis</title>
+</head>
+<body>
+    <form id="analysisForm">
+        <label for="ipsFile">Select IPS File:</label>
+        <input type="file" id="ipsFile" name="ipsFile" accept=".ips">
+
+        <button type="button" onclick="analyzeFile()">Analyze File</button>
+    </form>
+
+    <script>
+        function analyzeFile() {
+            var fileInput = document.getElementById('ipsFile');
+            var file = fileInput.files[0];
+
+            if (file) {
+                var formData = new FormData();
+                formData.append('file', file);
+
+                fetch('http://your_server_ip:5000/analyze', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Analysis Result:\nWord Count: ' + data.word_count);
+                })
+                .catch(error => {
+                    alert('Error during analysis: ' + error.message);
+                });
+            } else {
+                alert('Please select an IPS file.');
+            }
+        }
+    </script>
+</body>
+</html>
